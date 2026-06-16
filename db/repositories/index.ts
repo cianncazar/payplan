@@ -8,3 +8,4 @@ export * from './allowance-budgets';
 export * from './plan-scenarios';
 export * from './plan-allocations';
 export * from './manual-cash-adjustments';
+export * from './savings';
