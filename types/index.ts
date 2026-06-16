@@ -394,6 +394,33 @@ export type PlannerResult = {
   explanations: string[];
 };
 
+// ─── Savings ──────────────────────────────────────────────────────────────────
+
+export type SavingsGoalStatus = 'active' | 'completed' | 'archived';
+
+export type SavingsGoal = {
+  id: string;
+  name: string;
+  targetAmountMinor: number;
+  savedAmountMinor: number;
+  targetDate?: string;
+  currency: string;
+  notes?: string;
+  status: SavingsGoalStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SavingsDeposit = {
+  id: string;
+  goalId: string;
+  amountMinor: number;
+  date: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 // ─── Result type ──────────────────────────────────────────────────────────────
 
 export type Result<T> =

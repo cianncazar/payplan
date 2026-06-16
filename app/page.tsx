@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { AvailableCashCard } from '@/components/dashboard/available-cash-card';
 import { DueSoonCard } from '@/components/dashboard/due-soon-card';
+import { SavingsSummaryCard } from '@/components/dashboard/savings-summary-card';
 import { UpcomingPaymentsList } from '@/components/dashboard/upcoming-payments-list';
 
 export const metadata: Metadata = { title: 'Dashboard' };
@@ -20,6 +21,11 @@ export default function DashboardPage() {
         <AvailableCashCard />
         <DueSoonCard days={7} />
         <DueSoonCard days={30} />
+      </div>
+
+      {/* Savings summary */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <SavingsSummaryCard />
       </div>
 
       {/* Upcoming payments list */}

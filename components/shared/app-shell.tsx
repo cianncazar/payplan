@@ -15,6 +15,7 @@ import {
   MoreHorizontal,
   Banknote,
   PiggyBank,
+  Coins,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -41,6 +42,7 @@ const primaryNav: NavItem[] = [
 const secondaryNav: NavItem[] = [
   { href: '/cash-sources', label: 'Cash Sources', icon: Banknote },
   { href: '/allowance', label: 'Allowance', icon: PiggyBank },
+  { href: '/savings', label: 'Savings', icon: Coins },
   { href: '/calendar', label: 'Calendar', icon: CalendarDays },
   { href: '/scenarios', label: 'Scenarios', icon: GitCompare },
   { href: '/backup', label: 'Backup', icon: Download },

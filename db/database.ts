@@ -12,6 +12,8 @@ import type {
   PlanScenario,
   PlanAllocation,
   ManualCashAdjustment,
+  SavingsGoal,
+  SavingsDeposit,
 } from '@/types';
 
 class PayPlanDatabase extends Dexie {
@@ -25,6 +27,8 @@ class PayPlanDatabase extends Dexie {
   planScenarios!: EntityTable<PlanScenario, 'id'>;
   planAllocations!: EntityTable<PlanAllocation, 'id'>;
   manualCashAdjustments!: EntityTable<ManualCashAdjustment, 'id'>;
+  savingsGoals!: EntityTable<SavingsGoal, 'id'>;
+  savingsDeposits!: EntityTable<SavingsDeposit, 'id'>;
 
   constructor() {
     super('PayPlanDB');
@@ -47,6 +51,12 @@ class PayPlanDatabase extends Dexie {
     // Version 2 — add createdAt index to planScenarios for orderBy sorting.
     this.version(2).stores({
       planScenarios: 'id, active, startDate, endDate, createdAt',
+    });
+
+    // Version 3 — add savings goals and deposits tables.
+    this.version(3).stores({
+      savingsGoals: 'id, status, targetDate',
+      savingsDeposits: 'id, goalId, date',
     });
   }
 }
