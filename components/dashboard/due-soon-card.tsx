@@ -12,6 +12,12 @@ function addDays(n: number): string {
   return formatISODate(d);
 }
 
+const PALETTE = {
+  7:  { icon: 'bg-amber-100 dark:bg-amber-950', iconFg: 'text-amber-600 dark:text-amber-400', amount: 'text-amber-700 dark:text-amber-300' },
+  14: { icon: 'bg-blue-100 dark:bg-blue-950',   iconFg: 'text-blue-600 dark:text-blue-400',   amount: 'text-blue-700 dark:text-blue-300'   },
+  30: { icon: 'bg-blue-100 dark:bg-blue-950',   iconFg: 'text-blue-600 dark:text-blue-400',   amount: 'text-blue-700 dark:text-blue-300'   },
+} as const;
+
 export function DueSoonCard({ days = 7 }: { days?: 7 | 14 | 30 }) {
   const today = formatISODate(new Date());
   const cutoff = addDays(days);
@@ -31,13 +37,17 @@ export function DueSoonCard({ days = 7 }: { days?: 7 | 14 | 30 }) {
     0
   );
 
+  const palette = PALETTE[days];
+
   return (
     <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Calendar className="h-4 w-4" aria-hidden />
+        <span className={`flex h-6 w-6 items-center justify-center rounded-md ${palette.icon}`}>
+          <Calendar className={`h-3.5 w-3.5 ${palette.iconFg}`} aria-hidden />
+        </span>
         Due in {days} days
       </div>
-      <div className="mt-1 text-2xl font-semibold tabular-nums">
+      <div className={`mt-2 text-2xl font-semibold tabular-nums ${palette.amount}`}>
         {occurrences === undefined ? (
           <span className="block h-7 w-24 animate-pulse rounded bg-muted" />
         ) : (

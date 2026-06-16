@@ -1,0 +1,17 @@
+
+> payplan@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.2.112:3000
+✓ Ready in 298ms
+
+ GET / 200 in 298ms (next.js: 131ms, application-code: 166ms)
+ GET /payments 200 in 33ms (next.js: 19ms, application-code: 14ms)
+ GET /income 200 in 30ms (next.js: 18ms, application-code: 12ms)
+ GET /planner 200 in 28ms (next.js: 17ms, application-code: 11ms)
+ GET /payments 200 in 15ms (next.js: 3ms, application-code: 13ms)
+ GET / 200 in 13ms (next.js: 1936µs, application-code: 11ms)
+ GET / 200 in 36ms (next.js: 3ms, application-code: 33ms)
+ GET / 200 in 31ms (next.js: 2ms, application-code: 29ms)

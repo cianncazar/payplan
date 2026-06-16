@@ -16,10 +16,12 @@ export function AvailableCashCard() {
   return (
     <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Wallet className="h-4 w-4" aria-hidden />
+        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-100 dark:bg-emerald-950">
+          <Wallet className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden />
+        </span>
         Available cash
       </div>
-      <div className="mt-1 text-2xl font-semibold tabular-nums">
+      <div className="mt-2 text-2xl font-semibold tabular-nums text-emerald-700 dark:text-emerald-300">
         {cashSources === undefined ? (
           <span className="h-7 w-28 animate-pulse rounded bg-muted" />
         ) : (

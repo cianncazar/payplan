@@ -59,7 +59,7 @@ export function UpcomingPaymentsList({ maxItems = 5 }: { maxItems?: number }) {
 
   return (
     <div className="rounded-lg border border-border bg-card shadow-sm">
-      <div className="border-b border-border px-4 py-3">
+      <div className="border-b border-border bg-muted/40 px-4 py-3">
         <h2 className="text-base font-semibold">Upcoming Payments</h2>
       </div>
       <ul className="divide-y divide-border">
@@ -73,7 +73,13 @@ export function UpcomingPaymentsList({ maxItems = 5 }: { maxItems?: number }) {
           return (
             <li
               key={occ.id}
-              className="flex items-center justify-between gap-3 px-4 py-3"
+              className={`flex items-center justify-between gap-3 px-4 py-3 ${
+                isOverdue
+                  ? 'border-l-2 border-l-destructive bg-destructive/5'
+                  : isToday
+                  ? 'border-l-2 border-l-amber-500 bg-amber-50 dark:bg-amber-950/30'
+                  : ''
+              }`}
             >
               <div className="flex min-w-0 flex-col">
                 <span className="truncate text-sm font-medium">{name}</span>
