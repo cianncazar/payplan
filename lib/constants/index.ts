@@ -134,4 +134,5 @@ export const DEFAULT_SETTINGS: Omit<AppSettings, 'createdAt' | 'updatedAt'> = {
 export const LOCAL_STORAGE_KEYS = {
   noticesDismissed: 'payplan-notice-dismissed',
   sidebarOpen: 'payplan-sidebar-open',
+  driveLastBackupAt: 'payplan-drive-last-backup-at',
 } as const;

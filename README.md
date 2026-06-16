@@ -69,6 +69,59 @@ Copy `.env.example` to `.env.local`. No secrets are required for the core app.
 cp .env.example .env.local
 ```
 
+### Optional: Google Drive backup
+
+PayPlan can back up your plan to your own Google Drive. The feature is entirely opt-in and only activates when you click **Connect Google Drive** on the `/backup` page.
+
+#### 1. Create a Google Cloud project
+
+1. Go to [https://console.cloud.google.com](https://console.cloud.google.com) and create a new project (e.g. `payplan`).
+2. In the left menu go to **APIs & Services → Library** and enable the **Google Drive API**.
+
+#### 2. Configure the OAuth consent screen
+
+1. Go to **APIs & Services → OAuth consent screen**.
+2. Choose **External** (or Internal if this is a personal Workspace app).
+3. Fill in the required fields:
+   - App name: `PayPlan`
+   - User support email: your email
+   - Developer contact email: your email
+4. On the **Scopes** step, click **Add or Remove Scopes** and add:
+   ```
+   https://www.googleapis.com/auth/drive.appdata
+   ```
+   This is the narrowest Drive scope — PayPlan can only read and write files it created itself. It cannot access the rest of your Drive.
+5. Add any test users if the app is in **Testing** mode (required until you publish).
+6. Save and continue.
+
+#### 3. Create an OAuth 2.0 Client ID
+
+1. Go to **APIs & Services → Credentials → Create Credentials → OAuth client ID**.
+2. Application type: **Web application**.
+3. Name: `PayPlan Web`.
+4. Under **Authorised JavaScript origins** add your domain(s), for example:
+   - `http://localhost:3000` (local development)
+   - `https://your-production-domain.com` (production)
+5. No redirect URIs are needed (PayPlan uses the implicit token flow, not redirect flow).
+6. Click **Create** and copy the **Client ID**.
+
+#### 4. Set the environment variable
+
+Add the Client ID to `.env.local`:
+
+```bash
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=123456789-abc.apps.googleusercontent.com
+```
+
+Restart the dev server. The **Google Drive Backup** section will appear on the `/backup` page.
+
+#### Security notes
+
+- The access token is stored in `sessionStorage` only — it is cleared when the browser tab closes.
+- No token is persisted to disk or sent to any server controlled by PayPlan.
+- The Drive scope `drive.appdata` is hidden from the user's Drive UI; files are not visible in **My Drive**.
+- PayPlan never uploads automatically. Every backup and restore requires an explicit click.
+
 ---
 
 ## Available scripts
