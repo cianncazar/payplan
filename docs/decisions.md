@@ -91,3 +91,23 @@
 **Decision:** Default currency `PHP`, locale `en-PH`, timezone `Asia/Manila`.
 
 **Reason:** The spec (§8.1) specifies these defaults. The sample data (§25) is denominated in Philippine pesos. Stored in `AppSettings` in IndexedDB and overridable by the user in `/settings`.
+
+---
+
+## ADR-010 — Optional Google Drive backup (no backend)
+
+**Date:** 2026-06-16
+
+**Decision:** Add an optional, user-initiated Google Drive backup to the `/backup` page using the Google Identity Services (GIS) token flow and the Drive REST API directly from the browser. No backend proxy, no Supabase, no Firebase. The feature is gated by `NEXT_PUBLIC_GOOGLE_CLIENT_ID`; if that variable is unset, the section shows a configuration notice and no Drive requests are made.
+
+**Scope used:** `https://www.googleapis.com/auth/drive.appdata` — the narrowest available Drive scope. PayPlan can only read and write files it created itself inside the hidden `appDataFolder`; it cannot access any other files in the user's Drive.
+
+**Token storage:** Access tokens are kept in `sessionStorage` (cleared when the tab closes). The last-backup timestamp is stored in `localStorage` under `payplan-drive-last-backup-at`. No token is persisted across sessions — the user must reconnect after closing the tab.
+
+**Backup file:** A single file named `payplan-backup.json` is maintained in `appDataFolder`. On each backup the existing file is overwritten via a multipart PATCH request. The file is invisible to the user in the Drive UI.
+
+**Why not an npm Drive client?** The GIS script is loaded dynamically from `accounts.google.com/gsi/client` (Google's recommended distribution) and Drive is accessed via `fetch` against the REST API. This avoids adding a runtime dependency and keeps the bundle small.
+
+**Conflict resolution:** Restoring from Drive uses the same merge/replace UI and Zod-validated import pipeline as the local JSON import, so validation rules are never bypassed.
+
+**No automatic uploads:** Every upload and restore requires an explicit user click. Nothing is uploaded silently in the background.

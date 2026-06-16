@@ -9,6 +9,7 @@ import { parseBackupFile, getBackupPreview, importBackupReplace, importBackupMer
 import type { ValidatedBackup } from '@/lib/backup/schemas';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/shared/confirm-dialog';
+import { GoogleDriveSection } from '@/components/backup/google-drive-section';
 
 // ─── Section card wrapper ─────────────────────────────────────────────────────
 
@@ -380,6 +381,7 @@ export default function BackupPage() {
 
       <ExportSection />
       <ImportSection />
+      <GoogleDriveSection />
       <ResetSection />
     </div>
   );
