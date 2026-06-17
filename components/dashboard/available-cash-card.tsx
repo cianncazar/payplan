@@ -2,8 +2,10 @@
 
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Wallet } from 'lucide-react';
+import Link from 'next/link';
 import { db } from '@/db/database';
 import { formatMoney } from '@/lib/money';
+import { buttonVariants } from '@/components/ui/button';
 
 export function AvailableCashCard() {
   const cashSources = useLiveQuery(
@@ -34,7 +36,11 @@ export function AvailableCashCard() {
         </div>
       )}
       {cashSources !== undefined && cashSources.length === 0 && (
-        <div className="mt-1 text-xs text-muted-foreground">No cash sources added yet</div>
+        <div className="mt-2">
+          <Link href="/cash-sources" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+            Add a cash source
+          </Link>
+        </div>
       )}
     </div>
   );

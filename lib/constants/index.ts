@@ -136,4 +136,5 @@ export const LOCAL_STORAGE_KEYS = {
   sidebarOpen: 'payplan-sidebar-open',
   driveLastBackupAt: 'payplan-drive-last-backup-at',
   tourCompleted: 'payplan-tour-completed',
+  quickStartDismissed: 'payplan-quickstart-dismissed',
 } as const;

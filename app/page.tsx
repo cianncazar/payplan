@@ -3,31 +3,39 @@ import { AvailableCashCard } from '@/components/dashboard/available-cash-card';
 import { DueSoonCard } from '@/components/dashboard/due-soon-card';
 import { SavingsSummaryCard } from '@/components/dashboard/savings-summary-card';
 import { UpcomingPaymentsList } from '@/components/dashboard/upcoming-payments-list';
+import { ShortfallAlertCard } from '@/components/dashboard/shortfall-alert-card';
+import { SmartInsights } from '@/components/dashboard/smart-insights';
+import { QuickStartBanner } from '@/components/dashboard/quick-start-banner';
+import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 
 export default function DashboardPage() {
   return (
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Your payment planning summary.
-        </p>
-      </div>
+      <DashboardHeader />
 
-      {/* Summary cards */}
+      {/* Hero: answers "will I have enough money?" */}
+      <ShortfallAlertCard />
+
+      {/* Contextual insight pills */}
+      <SmartInsights />
+
+      {/* Onboarding guide — hidden once user has data */}
+      <QuickStartBanner />
+
+      {/* Summary metrics */}
       <div className="grid gap-4 sm:grid-cols-3">
         <AvailableCashCard />
         <DueSoonCard days={7} />
         <DueSoonCard days={30} />
       </div>
 
-      {/* Savings summary */}
-      <SavingsSummaryCard />
-
-      {/* Upcoming payments list */}
+      {/* Upcoming payments */}
       <UpcomingPaymentsList maxItems={5} />
+
+      {/* Savings progress */}
+      <SavingsSummaryCard />
     </div>
   );
 }

@@ -1,11 +1,13 @@
 'use client';
 
 import { useLiveQuery } from 'dexie-react-hooks';
-import { AlertCircle, Clock } from 'lucide-react';
+import { AlertCircle, Clock, CreditCard } from 'lucide-react';
 import Link from 'next/link';
 import { db } from '@/db/database';
 import { formatMoney } from '@/lib/money';
 import { formatISODate } from '@/lib/dates';
+import { EmptyState } from '@/components/shared/empty-state';
+import { buttonVariants } from '@/components/ui/button';
 
 function addDays(n: number): string {
   const d = new Date();
@@ -51,9 +53,16 @@ export function UpcomingPaymentsList({ maxItems = 5 }: { maxItems?: number }) {
 
   if (topItems.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-        No payments due in the next 14 days.
-      </div>
+      <EmptyState
+        icon={<CreditCard className="h-5 w-5" />}
+        title="No payments due in the next 14 days"
+        description="Add your recurring bills and loans to start tracking what's due."
+        action={
+          <Link href="/payments" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+            Add a payment
+          </Link>
+        }
+      />
     );
   }
 
