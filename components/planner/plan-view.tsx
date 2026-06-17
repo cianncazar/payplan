@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { CheckCircle2, AlertTriangle, XCircle, Lock } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, ChevronDown, XCircle, Lock } from 'lucide-react';
 import { formatMoney } from '@/lib/money';
+import { cn } from '@/lib/utils';
 import type { PlannerResult, PlannerPaymentOccurrence } from '@/types';
 import { PlanHealthBadge } from './plan-health-badge';
 
@@ -95,10 +97,23 @@ export function PlanView({
     shortfalls.map((s) => [s.occurrenceId, s.shortfallAmountMinor])
   );
 
-  // Filter warnings that should be shown prominently (not generic ones)
-  const prominentWarnings = warnings.filter(
-    (w) => w.code === 'EXPECTED_INCOME_INCLUDED' || w.code === 'LOCKED_ALLOCATION_UNDERFUNDED'
+  const actionableWarnings = warnings.filter(
+    (w) =>
+      w.code === 'EXPECTED_INCOME_INCLUDED' ||
+      w.code === 'LOCKED_ALLOCATION_UNDERFUNDED' ||
+      w.code === 'ESTIMATE_AMOUNT'
   );
+
+  const PREVIEW_COUNT = 3;
+  const needsToggle = actionableWarnings.length > PREVIEW_COUNT;
+  // Auto-expand for statuses where warnings are most critical.
+  const [warningsExpanded, setWarningsExpanded] = useState(
+    summary.health === 'shortfall' || summary.health === 'tight'
+  );
+
+  const visibleWarnings = needsToggle && !warningsExpanded
+    ? actionableWarnings.slice(0, PREVIEW_COUNT)
+    : actionableWarnings;
 
   const hasMeaningfulAllocations = allocations.some((a) => a.plannedAmountMinor > 0);
 
@@ -144,19 +159,39 @@ export function PlanView({
         )}
       </div>
 
-      {/* Prominent warnings */}
-      {prominentWarnings.length > 0 && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950">
-          <div className="flex items-start gap-2">
+      {/* Warnings panel — expandable when many lines */}
+      {actionableWarnings.length > 0 && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950">
+          <div className="flex items-start gap-2 p-3">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
-            <ul className="space-y-1">
-              {prominentWarnings.map((w, i) => (
+            <ul className="flex-1 space-y-1">
+              {visibleWarnings.map((w, i) => (
                 <li key={i} className="text-sm text-amber-700 dark:text-amber-300">
                   {w.message}
                 </li>
               ))}
             </ul>
           </div>
+          {needsToggle && (
+            <button
+              type="button"
+              onClick={() => setWarningsExpanded((v) => !v)}
+              className="flex w-full items-center justify-between border-t border-amber-200 px-3 py-2 text-xs text-amber-700 transition-colors duration-150 hover:bg-amber-100 dark:border-amber-900 dark:text-amber-300 dark:hover:bg-amber-900/40"
+            >
+              <span>
+                {warningsExpanded
+                  ? 'Show fewer warnings'
+                  : `Show ${actionableWarnings.length - PREVIEW_COUNT} more warning${actionableWarnings.length - PREVIEW_COUNT !== 1 ? 's' : ''}`}
+              </span>
+              <ChevronDown
+                className={cn(
+                  'h-3.5 w-3.5 transition-transform duration-200',
+                  warningsExpanded && 'rotate-180'
+                )}
+                aria-hidden
+              />
+            </button>
+          )}
         </div>
       )}
 
