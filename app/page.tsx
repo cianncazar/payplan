@@ -24,9 +24,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Savings summary */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <SavingsSummaryCard />
-      </div>
+      <SavingsSummaryCard />
 
       {/* Upcoming payments list */}
       <UpcomingPaymentsList maxItems={5} />
