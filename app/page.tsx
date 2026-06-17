@@ -3,7 +3,7 @@ import { AvailableCashCard } from '@/components/dashboard/available-cash-card';
 import { DueSoonCard } from '@/components/dashboard/due-soon-card';
 import { SavingsSummaryCard } from '@/components/dashboard/savings-summary-card';
 import { UpcomingPaymentsList } from '@/components/dashboard/upcoming-payments-list';
-import { ShortfallAlertCard } from '@/components/dashboard/shortfall-alert-card';
+import { PlanResultsCard } from '@/components/dashboard/plan-results-card';
 import { SmartInsights } from '@/components/dashboard/smart-insights';
 import { QuickStartBanner } from '@/components/dashboard/quick-start-banner';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
@@ -15,8 +15,8 @@ export default function DashboardPage() {
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
       <DashboardHeader />
 
-      {/* Hero: answers "will I have enough money?" */}
-      <ShortfallAlertCard />
+      {/* Live 30-day plan results */}
+      <PlanResultsCard />
 
       {/* Contextual insight pills */}
       <SmartInsights />
