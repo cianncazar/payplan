@@ -99,25 +99,50 @@ PayPlan can back up your plan to your own Google Drive. The feature is entirely 
 1. Go to **APIs & Services → Credentials → Create Credentials → OAuth client ID**.
 2. Application type: **Web application**.
 3. Name: `PayPlan Web`.
-4. Under **Authorised JavaScript origins** add your domain(s), for example:
-   - `http://localhost:3000` (local development)
-   - `https://your-production-domain.com` (production)
-5. No redirect URIs are needed (PayPlan uses the implicit token flow, not redirect flow).
-6. Click **Create** and copy the **Client ID**.
+4. Under **Authorised redirect URIs** add:
+   - `http://localhost:3000/api/auth/google/callback` (local development)
+   - `https://your-production-domain.com/api/auth/google/callback` (production)
 
-#### 4. Set the environment variable
+   Replace `your-production-domain.com` with your actual Vercel URL (e.g. `payplan.vercel.app`).
+5. Click **Create** and copy both the **Client ID** and **Client Secret**.
 
-Add the Client ID to `.env.local`:
+#### 4. Set environment variables
+
+**Local development** — add to `.env.local`:
 
 ```bash
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=123456789-abc.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-...
+# Optional — defaults to http://localhost:3000
+# NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-Restart the dev server. The **Google Drive Backup** section will appear on the `/backup` page.
+**Vercel deployment** — add in **Project → Settings → Environment Variables**:
+
+| Variable | Value | Visibility |
+|---|---|---|
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Client ID from step 3 | Public (client + server) |
+| `GOOGLE_CLIENT_SECRET` | Client secret from step 3 | **Secret (server only)** |
+| `NEXT_PUBLIC_APP_URL` | `https://your-domain.vercel.app` | Public — set this if the OAuth redirect URL is wrong |
+
+> **Important:** Do not prefix `GOOGLE_CLIENT_SECRET` with `NEXT_PUBLIC_`. Doing so would expose it in the browser bundle.
+
+Restart the dev server (or redeploy on Vercel). The **Google Drive Backup** section will appear on the `/backup` page.
+
+#### How the OAuth flow works
+
+PayPlan uses the **PKCE Authorization Code** flow (not the legacy implicit flow):
+
+1. You click **Connect Google Drive** → browser redirects to Google's sign-in page.
+2. After you approve, Google redirects to `/api/auth/google/callback`.
+3. The server-side callback exchanges the authorization code for an access token using `GOOGLE_CLIENT_SECRET`.
+4. The token is placed in a short-lived cookie and the browser is redirected back to `/backup`.
+5. The backup page picks up the token, moves it to `sessionStorage`, and clears the cookie.
 
 #### Security notes
 
-- The access token is stored in `sessionStorage` only — it is cleared when the browser tab closes.
+- The client secret is only used on the server; it is never included in the browser bundle.
+- The access token is stored in `sessionStorage` only — cleared when the browser tab closes.
 - No token is persisted to disk or sent to any server controlled by PayPlan.
 - The Drive scope `drive.appdata` is hidden from the user's Drive UI; files are not visible in **My Drive**.
 - PayPlan never uploads automatically. Every backup and restore requires an explicit click.
@@ -207,7 +232,7 @@ npm run build
 vercel deploy
 ```
 
-Set the `NEXT_PUBLIC_*` environment variables from `.env.example` in your Vercel project settings if you want to override the defaults.
+The core app needs no environment variables. To enable Google Drive backup, set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in **Project → Settings → Environment Variables** — see the [Google Drive setup](#optional-google-drive-backup) section above.
 
 ---
 
