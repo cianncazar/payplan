@@ -15,6 +15,13 @@ export default function DashboardPage() {
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
       <DashboardHeader />
 
+      {/* Summary metrics */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <AvailableCashCard />
+        <DueSoonCard days={7} />
+        <DueSoonCard days={30} />
+      </div>
+
       {/* Live 30-day plan results */}
       <PlanResultsCard />
 
@@ -23,13 +30,6 @@ export default function DashboardPage() {
 
       {/* Onboarding guide — hidden once user has data */}
       <QuickStartBanner />
-
-      {/* Summary metrics */}
-      <div className="grid gap-4 sm:grid-cols-3">
-        <AvailableCashCard />
-        <DueSoonCard days={7} />
-        <DueSoonCard days={30} />
-      </div>
 
       {/* Upcoming payments */}
       <UpcomingPaymentsList maxItems={5} />
