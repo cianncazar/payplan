@@ -135,4 +135,5 @@ export const LOCAL_STORAGE_KEYS = {
   noticesDismissed: 'payplan-notice-dismissed',
   sidebarOpen: 'payplan-sidebar-open',
   driveLastBackupAt: 'payplan-drive-last-backup-at',
+  tourCompleted: 'payplan-tour-completed',
 } as const;

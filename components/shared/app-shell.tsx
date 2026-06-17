@@ -26,6 +26,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { OnboardingTour } from '@/components/shared/onboarding-tour';
 
 type NavItem = {
   href: string;
@@ -173,6 +174,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <MobileBottomNav />
+      <OnboardingTour />
     </div>
   );
 }

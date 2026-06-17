@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { SettingsActions } from '@/components/settings/settings-actions';
 
 export const metadata: Metadata = { title: 'Settings' };
 
@@ -22,6 +23,8 @@ export default function SettingsPage() {
           <ThemeToggle />
         </div>
       </div>
+
+      <SettingsActions />
     </div>
   );
 }
