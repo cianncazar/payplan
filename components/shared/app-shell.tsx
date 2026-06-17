@@ -164,6 +164,12 @@ function MoreMenu() {
 }
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  if (pathname === '/landing') {
+    return <>{children}</>;
+  }
+
   return (
     <div className="flex min-h-screen">
       <DesktopSidebar />

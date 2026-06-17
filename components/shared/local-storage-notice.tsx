@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useSyncExternalStore } from 'react';
+import { usePathname } from 'next/navigation';
 import { AlertCircleIcon, XIcon } from 'lucide-react';
 import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
 
@@ -25,6 +26,7 @@ function getServerSnapshot() {
 }
 
 export default function LocalStorageNotice() {
+  const pathname = usePathname();
   const visible = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const dismiss = useCallback(() => {
@@ -37,7 +39,7 @@ export default function LocalStorageNotice() {
     window.dispatchEvent(new Event('storage'));
   }, []);
 
-  if (!visible) return null;
+  if (pathname === '/landing' || !visible) return null;
 
   return (
     <div
