@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ThemeToggle } from '@/components/shared/theme-toggle';
 
 export const metadata: Metadata = { title: 'Settings' };
 
@@ -11,8 +12,15 @@ export default function SettingsPage() {
           Currency, locale, theme, and planner defaults.
         </p>
       </div>
-      <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-        Settings controls will appear here.
+
+      <div className="rounded-lg border border-border">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div>
+            <p className="text-sm font-medium">Theme</p>
+            <p className="text-xs text-muted-foreground">Switch between light and dark mode</p>
+          </div>
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

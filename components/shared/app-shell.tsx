@@ -25,6 +25,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { ThemeToggle } from '@/components/shared/theme-toggle';
 
 type NavItem = {
   href: string;
@@ -107,6 +108,10 @@ function DesktopSidebar() {
           ))}
         </div>
       </nav>
+      <div className="flex items-center justify-between border-t border-sidebar-border px-3 py-2">
+        <span className="text-xs text-muted-foreground">Theme</span>
+        <ThemeToggle />
+      </div>
     </aside>
   );
 }
