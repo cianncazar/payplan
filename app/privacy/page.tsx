@@ -29,6 +29,7 @@ export default function PrivacyPage() {
           <li>Payment obligations and occurrences</li>
           <li>Income sources and events</li>
           <li>Allowance budgets</li>
+          <li>Savings goals and deposit history</li>
           <li>Plan scenarios and allocations</li>
           <li>Manual cash adjustments</li>
         </ul>
