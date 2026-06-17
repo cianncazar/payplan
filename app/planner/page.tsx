@@ -103,7 +103,7 @@ export default function PlannerPage() {
 
   // Derive effective values: user override takes priority, then settings default, then fallback.
   const strategy = strategyOverride ?? settings?.defaultStrategy ?? 'deadline_first';
-  const includeExpected = includeExpectedOverride ?? settings?.includeExpectedIncomeDefault ?? false;
+  const includeExpected = includeExpectedOverride ?? settings?.includeExpectedIncomeDefault ?? true;
 
   // ── Generate plan ──
   const generate = useCallback(async () => {
