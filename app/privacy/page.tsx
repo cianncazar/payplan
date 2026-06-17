@@ -22,9 +22,7 @@ export default function PrivacyPage() {
         </p>
 
         <h2>What is stored</h2>
-        <p>
-          PayPlan stores the following data locally on your device:
-        </p>
+        <p>PayPlan stores the following data locally on your device:</p>
         <ul>
           <li>App settings and preferences</li>
           <li>Cash sources and balances</li>
@@ -35,10 +33,42 @@ export default function PrivacyPage() {
           <li>Manual cash adjustments</li>
         </ul>
 
+        <h2>Google Drive backup (optional)</h2>
+        <p>
+          You can optionally back up your plan to your own Google Drive from the{' '}
+          <a href="/backup">Backup page</a>. This feature is entirely opt-in and works
+          as follows:
+        </p>
+        <ul>
+          <li>
+            PayPlan requests only the <code>drive.appdata</code> permission — a restricted
+            scope that lets the app read and write only the files it created itself. It
+            cannot access, view, or modify any other files in your Drive.
+          </li>
+          <li>
+            The backup file is stored in a hidden app folder in your Drive, not visible
+            in My Drive.
+          </li>
+          <li>
+            PayPlan never uploads or downloads automatically. Every backup and restore
+            requires an explicit action from you.
+          </li>
+          <li>
+            Your Google access token is stored in <code>sessionStorage</code> only — it
+            is cleared when the browser tab closes and is never written to disk or sent
+            to any PayPlan server.
+          </li>
+          <li>
+            Disconnecting Google Drive from the Backup page revokes PayPlan&apos;s access
+            immediately. Any backup file already in your Drive is not deleted — you can
+            remove it manually from Google Drive settings.
+          </li>
+        </ul>
+
         <h2>What is not stored or transmitted</h2>
         <ul>
-          <li>No data is sent to any server.</li>
-          <li>No account, email, or password is required or stored.</li>
+          <li>No planning data is sent to any PayPlan server.</li>
+          <li>No account, email, or password is required or stored by PayPlan.</li>
           <li>No bank credentials or card numbers are requested or stored.</li>
           <li>No analytics are collected that include payment names, amounts, or dates.</li>
         </ul>
