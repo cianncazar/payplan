@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { AvailableCashCard } from '@/components/dashboard/available-cash-card';
 import { DueSoonCard } from '@/components/dashboard/due-soon-card';
 import { SavingsSummaryCard } from '@/components/dashboard/savings-summary-card';
-import { UpcomingPaymentsList } from '@/components/dashboard/upcoming-payments-list';
 import { PlanResultsCard } from '@/components/dashboard/plan-results-card';
 import { SmartInsights } from '@/components/dashboard/smart-insights';
 import { QuickStartBanner } from '@/components/dashboard/quick-start-banner';
@@ -30,9 +29,6 @@ export default function DashboardPage() {
 
       {/* Onboarding guide — hidden once user has data */}
       <QuickStartBanner />
-
-      {/* Upcoming payments */}
-      <UpcomingPaymentsList maxItems={5} />
 
       {/* Savings progress */}
       <SavingsSummaryCard />
