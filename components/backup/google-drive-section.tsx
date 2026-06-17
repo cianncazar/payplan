@@ -27,7 +27,9 @@ import {
 import type { ValidatedBackup } from '@/lib/backup/schemas';
 import {
   isDriveConnected,
-  requestAccessToken,
+  hasCallbackCookie,
+  readAndClearCallbackToken,
+  initiateOAuthRedirect,
   revokeAccessToken,
   getStoredToken,
 } from '@/lib/google-drive/auth';
@@ -155,10 +157,22 @@ type Phase =
 
 type RestoreMode = 'merge' | 'replace';
 
+const DRIVE_ERROR_MESSAGES: Record<string, string> = {
+  not_configured:
+    'Google Drive is not configured on this server. Set NEXT_PUBLIC_GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your environment variables.',
+  token_exchange_failed: 'Failed to complete Google sign-in. Please try again.',
+  invalid_state: 'Invalid OAuth state. Please try connecting again.',
+  missing_params: 'OAuth response was incomplete. Please try again.',
+  no_token: 'Google did not return an access token. Please try again.',
+};
+
 export function GoogleDriveSection() {
-  const [phase, setPhase] = React.useState<Phase>(() =>
-    isDriveConnected() ? 'idle' : 'disconnected'
-  );
+  const [phase, setPhase] = React.useState<Phase>(() => {
+    if (isDriveConnected()) return 'idle';
+    // Avoid a flash of "disconnected" when the OAuth callback just deposited a token cookie.
+    if (hasCallbackCookie()) return 'idle';
+    return 'disconnected';
+  });
   const [lastBackupAt, setLastBackupAtState] = React.useState<string | null>(getLastBackupAt);
 
   // Restore-preview state
@@ -169,6 +183,21 @@ export function GoogleDriveSection() {
   const [confirmReplace, setConfirmReplace] = React.useState(false);
   const [confirmDisconnect, setConfirmDisconnect] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+
+  // Consume the OAuth callback cookie and handle any error query param.
+  React.useEffect(() => {
+    readAndClearCallbackToken();
+
+    const params = new URLSearchParams(window.location.search);
+    const driveError = params.get('drive_error');
+    if (driveError) {
+      setError(DRIVE_ERROR_MESSAGES[driveError] ?? `Connection error: ${driveError}`);
+      setPhase('disconnected');
+      const url = new URL(window.location.href);
+      url.searchParams.delete('drive_error');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, []);
 
   function handleExpired() {
     revokeAccessToken().catch(() => {});
@@ -183,15 +212,11 @@ export function GoogleDriveSection() {
     setPhase('connecting');
     setError(null);
     try {
-      await requestAccessToken(CLIENT_ID);
-      setPhase('idle');
+      await initiateOAuthRedirect(CLIENT_ID);
+      // Browser navigates away — code below is never reached in normal flow.
     } catch (err) {
       setPhase('disconnected');
-      const msg = err instanceof Error ? err.message : 'Connection failed.';
-      // "access_denied" means user closed the popup — don't show as error
-      if (!msg.includes('access_denied') && !msg.includes('popup_closed')) {
-        setError(msg);
-      }
+      setError(err instanceof Error ? err.message : 'Connection failed.');
     }
   }
 
