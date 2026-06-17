@@ -7,7 +7,8 @@ export async function GET(req: NextRequest) {
   const oauthError = searchParams.get('error');
 
   // Prefer an explicitly configured app URL; fall back to the request origin.
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? req.nextUrl.origin;
+  // Strip trailing slash so appUrl + '/path' never produces '//path'.
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? req.nextUrl.origin).replace(/\/+$/, '');
   const backupUrl = `${appUrl}/backup`;
 
   if (oauthError) {
