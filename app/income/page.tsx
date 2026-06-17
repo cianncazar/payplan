@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { format } from 'date-fns';
 import {
+  Copy,
   Edit,
   MoreHorizontal,
   Plus,
@@ -44,9 +45,34 @@ import {
   deleteIncomeEvent,
   listIncomeEvents,
 } from '@/db/repositories';
+import { expandRecurrence } from '@/lib/calculations/recurrence';
+import { formatISODate } from '@/lib/dates';
 import { INCOME_TYPE_LABELS } from '@/lib/constants';
 import { formatMoney } from '@/lib/money';
 import type { IncomeSource, IncomeEvent } from '@/types';
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function addDaysToISO(iso: string, n: number): string {
+  const d = new Date(`${iso}T00:00:00`);
+  d.setDate(d.getDate() + n);
+  return formatISODate(d);
+}
+
+/** Return the next payday date after `event.expectedDate` using the source's
+ *  recurrence rule. Falls back to +1 month if no rule is available. */
+function nextPaydayDate(event: IncomeEvent, source?: IncomeSource): string {
+  if (source?.recurrence) {
+    const from = addDaysToISO(event.expectedDate, 1);
+    const to = addDaysToISO(event.expectedDate, 400);
+    const dates = expandRecurrence(source.recurrence, from, to);
+    if (dates.length > 0) return dates[0];
+  }
+  // Fallback: advance by one month, keeping the same day of month.
+  const d = new Date(`${event.expectedDate}T00:00:00`);
+  d.setMonth(d.getMonth() + 1);
+  return formatISODate(d);
+}
 
 // ─── Status presentation ──────────────────────────────────────────────────────
 
@@ -137,6 +163,19 @@ export default function IncomePage() {
     await deleteIncomeEvent(deleteEvent.id);
     toast.success('Deleted.');
     setDeleteEvent(null);
+  }
+  async function handleDuplicateEvent(event: IncomeEvent) {
+    const source = sources.find((s) => s.id === event.incomeSourceId);
+    const nextDate = nextPaydayDate(event, source);
+    await createIncomeEvent({
+      incomeSourceId: event.incomeSourceId,
+      cashSourceId: event.cashSourceId,
+      expectedDate: nextDate,
+      expectedAmountMinor: event.expectedAmountMinor,
+      status: 'expected',
+      notes: event.notes,
+    });
+    toast.success(`Duplicated to ${nextDate}.`);
   }
 
   return (
@@ -239,6 +278,10 @@ export default function IncomePage() {
                             <DropdownMenuItem onClick={() => openEditEvent(event)}>
                               <Edit aria-hidden="true" />
                               Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDuplicateEvent(event)}>
+                              <Copy aria-hidden="true" />
+                              Duplicate to next payday
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
