@@ -114,6 +114,27 @@ export const CASH_SOURCE_TYPE_LABELS: Record<CashSourceType, string> = {
   other: 'Other',
 };
 
+export const CURRENCY_OPTIONS = [
+  { value: 'PHP', label: '₱ Philippine Peso (PHP)' },
+  { value: 'USD', label: '$ US Dollar (USD)' },
+  { value: 'SGD', label: 'S$ Singapore Dollar (SGD)' },
+  { value: 'MYR', label: 'RM Malaysian Ringgit (MYR)' },
+  { value: 'EUR', label: '€ Euro (EUR)' },
+  { value: 'GBP', label: '£ British Pound (GBP)' },
+  { value: 'AUD', label: 'A$ Australian Dollar (AUD)' },
+  { value: 'HKD', label: 'HK$ Hong Kong Dollar (HKD)' },
+  { value: 'JPY', label: '¥ Japanese Yen (JPY)' },
+] as const;
+
+export const LOCALE_OPTIONS = [
+  { value: 'en-PH', label: 'English (Philippines)' },
+  { value: 'en-US', label: 'English (United States)' },
+  { value: 'en-SG', label: 'English (Singapore)' },
+  { value: 'en-MY', label: 'English (Malaysia)' },
+  { value: 'en-GB', label: 'English (United Kingdom)' },
+  { value: 'en-AU', label: 'English (Australia)' },
+] as const;
+
 export const BACKUP_FORMAT = 'payplan-backup' as const;
 export const BACKUP_VERSION = 1 as const;
 export const APP_VERSION = '0.1.0';
@@ -126,6 +147,7 @@ export const DEFAULT_SETTINGS: Omit<AppSettings, 'createdAt' | 'updatedAt'> = {
   minimumCashBufferMinor: 0,
   weekStartsOn: 0,
   defaultStrategy: 'deadline_first',
+  includeExpectedIncomeDefault: false,
   theme: 'system',
   privacyMode: false,
   setupCompleted: false,

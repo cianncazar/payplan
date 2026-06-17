@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { SettingsActions } from '@/components/settings/settings-actions';
+import { PreferencesForm } from '@/components/settings/preferences-form';
 
 export const metadata: Metadata = { title: 'Settings' };
 
@@ -14,6 +15,7 @@ export default function SettingsPage() {
         </p>
       </div>
 
+      {/* Theme */}
       <div className="rounded-lg border border-border">
         <div className="flex items-center justify-between px-4 py-3">
           <div>
@@ -24,6 +26,10 @@ export default function SettingsPage() {
         </div>
       </div>
 
+      {/* Currency, locale, planner defaults */}
+      <PreferencesForm />
+
+      {/* Tour and sample data */}
       <SettingsActions />
     </div>
   );

@@ -3,8 +3,8 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Calendar } from 'lucide-react';
 import { db } from '@/db/database';
-import { formatMoney } from '@/lib/money';
 import { formatISODate } from '@/lib/dates';
+import { useFormatMoney } from '@/hooks/use-format-money';
 
 function addDays(n: number): string {
   const d = new Date();
@@ -19,6 +19,7 @@ const PALETTE = {
 } as const;
 
 export function DueSoonCard({ days = 7 }: { days?: 7 | 14 | 30 }) {
+  const fmt = useFormatMoney();
   const today = formatISODate(new Date());
   const cutoff = addDays(days);
 
@@ -51,7 +52,7 @@ export function DueSoonCard({ days = 7 }: { days?: 7 | 14 | 30 }) {
         {occurrences === undefined ? (
           <span className="block h-7 w-24 animate-pulse rounded bg-muted" />
         ) : (
-          formatMoney(totalDue)
+          fmt(totalDue)
         )}
       </div>
       {occurrences !== undefined && (

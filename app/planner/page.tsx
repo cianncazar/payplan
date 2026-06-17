@@ -68,9 +68,10 @@ export default function PlannerPage() {
   // ── Form state ──
   const [periodStart, setPeriodStart] = useState(todayStr);
   const [periodEnd, setPeriodEnd] = useState(defaultEnd);
-  const [strategy, setStrategy] = useState<PlannerStrategy>('deadline_first');
+  // User overrides: null = fall back to settings default
+  const [strategyOverride, setStrategyOverride] = useState<PlannerStrategy | null>(null);
+  const [includeExpectedOverride, setIncludeExpectedOverride] = useState<boolean | null>(null);
   const [bufferMinor, setBufferMinor] = useState(0);
-  const [includeExpected, setIncludeExpected] = useState(false);
   const [overrideOpeningCash, setOverrideOpeningCash] = useState<number | undefined>();
 
   // ── Result state ──
@@ -97,6 +98,10 @@ export default function PlannerPage() {
   );
 
   const openingCashMinor = overrideOpeningCash ?? totalCashMinor;
+
+  // Derive effective values: user override takes priority, then settings default, then fallback.
+  const strategy = strategyOverride ?? settings?.defaultStrategy ?? 'deadline_first';
+  const includeExpected = includeExpectedOverride ?? settings?.includeExpectedIncomeDefault ?? false;
 
   // ── Generate plan ──
   const generate = useCallback(async () => {
@@ -238,15 +243,12 @@ export default function PlannerPage() {
     }
   }, [result, periodStart, periodEnd, openingCashMinor, bufferMinor, strategy, includeExpected]);
 
-  // ── Init strategy from settings ──
-  useState(() => {
-    if (settings?.defaultStrategy && !result) {
-      setStrategy(settings.defaultStrategy);
+  // Seed the cash buffer from settings once (only if user hasn't touched it).
+  useEffect(() => {
+    if (settings?.minimumCashBufferMinor) {
+      setBufferMinor((prev) => (prev === 0 ? settings.minimumCashBufferMinor : prev));
     }
-    if (settings?.minimumCashBufferMinor && bufferMinor === 0) {
-      setBufferMinor(settings.minimumCashBufferMinor);
-    }
-  });
+  }, [settings?.minimumCashBufferMinor]);
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
@@ -287,7 +289,7 @@ export default function PlannerPage() {
             <Label htmlFor="pp-strategy">Strategy</Label>
             <Select
               value={strategy}
-              onValueChange={(v) => setStrategy(v as PlannerStrategy)}
+              onValueChange={(v) => v && setStrategyOverride(v as PlannerStrategy)}
             >
               <SelectTrigger id="pp-strategy">
                 <SelectValue />
@@ -336,7 +338,7 @@ export default function PlannerPage() {
               <input
                 type="checkbox"
                 checked={includeExpected}
-                onChange={(e) => setIncludeExpected(e.target.checked)}
+                onChange={(e) => setIncludeExpectedOverride(e.target.checked)}
                 className="h-4 w-4 rounded border-border"
               />
               Include expected (unconfirmed) income

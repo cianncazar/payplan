@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { PiggyBank, CheckCircle2 } from 'lucide-react';
 import { db } from '@/db/database';
-import { formatMoney } from '@/lib/money';
 import { cn } from '@/lib/utils';
+import { useFormatMoney } from '@/hooks/use-format-money';
 
 const MAX_SHOWN = 4;
 
 export function SavingsSummaryCard() {
+  const fmt = useFormatMoney();
   const goals = useLiveQuery(
     () => db.savingsGoals.filter((g) => g.status !== 'archived').toArray(),
     []
@@ -49,13 +50,13 @@ export function SavingsSummaryCard() {
         {loading ? (
           <span className="inline-block h-7 w-28 animate-pulse rounded bg-muted" />
         ) : (
-          formatMoney(totalSaved)
+          fmt(totalSaved)
         )}
       </div>
 
       {!loading && totalTarget > 0 && (
         <p className="mt-0.5 text-xs text-muted-foreground">
-          of {formatMoney(totalTarget)} target ·{' '}
+          of {fmt(totalTarget)} target ·{' '}
           {Math.min(100, Math.round((totalSaved / totalTarget) * 100))}% overall
         </p>
       )}
@@ -87,9 +88,9 @@ export function SavingsSummaryCard() {
                     </span>
                   </span>
                   <span className="shrink-0 tabular-nums text-xs text-muted-foreground">
-                    {formatMoney(goal.savedAmountMinor)}
+                    {fmt(goal.savedAmountMinor)}
                     {goal.targetAmountMinor > 0 && (
-                      <span className="text-muted-foreground/60"> / {formatMoney(goal.targetAmountMinor)}</span>
+                      <span className="text-muted-foreground/60"> / {fmt(goal.targetAmountMinor)}</span>
                     )}
                   </span>
                 </div>

@@ -4,10 +4,11 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { Wallet } from 'lucide-react';
 import Link from 'next/link';
 import { db } from '@/db/database';
-import { formatMoney } from '@/lib/money';
 import { buttonVariants } from '@/components/ui/button';
+import { useFormatMoney } from '@/hooks/use-format-money';
 
 export function AvailableCashCard() {
+  const fmt = useFormatMoney();
   const cashSources = useLiveQuery(
     () => db.cashSources.filter((s) => !s.archived && s.includeInPlanner).toArray(),
     []
@@ -27,7 +28,7 @@ export function AvailableCashCard() {
         {cashSources === undefined ? (
           <span className="h-7 w-28 animate-pulse rounded bg-muted" />
         ) : (
-          formatMoney(total)
+          fmt(total)
         )}
       </div>
       {cashSources !== undefined && cashSources.length > 0 && (

@@ -34,6 +34,7 @@ export const AppSettingsBackupSchema = z.object({
     z.literal(4), z.literal(5), z.literal(6),
   ]),
   defaultStrategy: PlannerStrategySchema,
+  includeExpectedIncomeDefault: z.boolean().optional().default(false),
   theme: ThemeSchema,
   privacyMode: z.boolean(),
   setupCompleted: z.boolean(),

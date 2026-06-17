@@ -4,13 +4,13 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { AlertCircle, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
 import Link from 'next/link';
 import { db } from '@/db/database';
-import { formatMoney } from '@/lib/money';
 import { formatISODate, parseISODate } from '@/lib/dates';
 import { DEFAULT_SETTINGS } from '@/lib/constants';
 import { computeShortfallSummary } from '@/lib/calculations/shortfall-summary';
 import type { CashFlowOccurrence, CashFlowIncomeEvent, CashFlowAllowanceReservation } from '@/lib/calculations/cash-flow';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useFormatMoney } from '@/hooks/use-format-money';
 
 function addDays(isoDate: string, n: number): string {
   const d = parseISODate(isoDate);
@@ -24,6 +24,7 @@ function formatDateShort(iso: string): string {
 }
 
 export function ShortfallAlertCard() {
+  const fmt = useFormatMoney();
   const today = formatISODate(new Date());
   const cutoff = addDays(today, 29);
 
@@ -159,14 +160,14 @@ export function ShortfallAlertCard() {
       headline = summary.coversThroughDate
         ? `You're covered through ${formatDateShort(summary.coversThroughDate)}`
         : 'You\'re covered for the next 30 days';
-      detail = `Lowest balance: ${formatMoney(summary.lowestBalanceMinor)}`;
+      detail = `Lowest balance: ${fmt(summary.lowestBalanceMinor)}`;
       break;
     case 'tight':
       headline = 'Your balance gets tight';
-      detail = `Lowest projected balance: ${formatMoney(summary.lowestBalanceMinor)} — consider adding funds.`;
+      detail = `Lowest projected balance: ${fmt(summary.lowestBalanceMinor)} — consider adding funds.`;
       break;
     case 'shortfall':
-      headline = `${formatMoney(summary.gapMinor)} gap on ${formatDateShort(summary.firstShortfallDate!)}`;
+      headline = `${fmt(summary.gapMinor)} gap on ${formatDateShort(summary.firstShortfallDate!)}`;
       detail = `Your cash won't cover all payments. Open the Planner to find a solution.`;
       break;
   }

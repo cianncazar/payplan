@@ -4,10 +4,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { AlertCircle, Clock, CreditCard } from 'lucide-react';
 import Link from 'next/link';
 import { db } from '@/db/database';
-import { formatMoney } from '@/lib/money';
 import { formatISODate } from '@/lib/dates';
 import { EmptyState } from '@/components/shared/empty-state';
 import { buttonVariants } from '@/components/ui/button';
+import { useFormatMoney } from '@/hooks/use-format-money';
 
 function addDays(n: number): string {
   const d = new Date();
@@ -23,6 +23,7 @@ function daysUntil(dueDate: string): number {
 }
 
 export function UpcomingPaymentsList({ maxItems = 5 }: { maxItems?: number }) {
+  const fmt = useFormatMoney();
   const today = formatISODate(new Date());
   const cutoff = addDays(14);
 
@@ -111,7 +112,7 @@ export function UpcomingPaymentsList({ maxItems = 5 }: { maxItems?: number }) {
                 </span>
               </div>
               <span className="shrink-0 text-sm font-medium tabular-nums">
-                {formatMoney(remaining)}
+                {fmt(remaining)}
               </span>
             </li>
           );
