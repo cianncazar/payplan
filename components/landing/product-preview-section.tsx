@@ -1,8 +1,9 @@
 import { AlertCircle, CheckCircle, CircleDollarSign, CalendarDays } from 'lucide-react';
+import { AnimatedSection } from './animated-section';
 
 function PreviewDashboardCard() {
   return (
-    <div className="w-full max-w-md rounded-2xl border border-border bg-card shadow-md">
+    <div className="w-full max-w-md rounded-2xl border border-border bg-card shadow-md transition-shadow duration-300 hover:shadow-xl">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-5 py-4">
         <div>
@@ -24,14 +25,14 @@ function PreviewDashboardCard() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 p-5">
-        <div className="rounded-lg border border-border bg-muted/40 p-3">
+        <div className="rounded-lg border border-border bg-muted/40 p-3 transition-colors duration-150 hover:bg-muted/70">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <CircleDollarSign className="h-3.5 w-3.5" aria-hidden />
             Money available today
           </div>
           <p className="mt-1 font-semibold tabular-nums">₱8,500</p>
         </div>
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 dark:border-emerald-800 dark:bg-emerald-950/30">
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 transition-colors duration-150 hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/30 dark:hover:bg-emerald-950/50">
           <div className="flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-300">
             <CheckCircle className="h-3.5 w-3.5" aria-hidden />
             Next income
@@ -43,7 +44,7 @@ function PreviewDashboardCard() {
       </div>
 
       {/* Next payment */}
-      <div className="border-t border-border px-5 py-3">
+      <div className="border-t border-border px-5 py-3 transition-colors duration-150 hover:bg-muted/30">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
             <CalendarDays className="h-4 w-4 text-muted-foreground" aria-hidden />
@@ -73,7 +74,7 @@ export function ProductPreviewSection() {
   return (
     <section className="bg-background py-16 md:py-24" aria-labelledby="preview-heading">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mx-auto max-w-2xl text-center">
+        <AnimatedSection className="mx-auto max-w-2xl text-center">
           <h2 id="preview-heading" className="text-3xl font-bold tracking-tight md:text-4xl">
             See your plan at a glance.
           </h2>
@@ -81,11 +82,11 @@ export function ProductPreviewSection() {
             The dashboard answers the key question immediately — can you cover what is due before
             your next income arrives?
           </p>
-        </div>
+        </AnimatedSection>
 
-        <div className="mt-12 flex justify-center">
+        <AnimatedSection delay={150} className="mt-12 flex justify-center">
           <PreviewDashboardCard />
-        </div>
+        </AnimatedSection>
       </div>
     </section>
   );

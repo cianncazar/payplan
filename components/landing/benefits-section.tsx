@@ -6,6 +6,7 @@ import {
   GitCompare,
   LockKeyhole,
 } from 'lucide-react';
+import { AnimatedSection } from './animated-section';
 
 const BENEFITS = [
   {
@@ -56,28 +57,27 @@ export function BenefitsSection() {
   return (
     <section id="benefits" className="bg-muted/40 py-16 md:py-24" aria-labelledby="benefits-heading">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mx-auto max-w-2xl text-center">
+        <AnimatedSection className="mx-auto max-w-2xl text-center">
           <h2 id="benefits-heading" className="text-3xl font-bold tracking-tight md:text-4xl">
             Built for payment planning, not complicated budgeting.
           </h2>
-        </div>
+        </AnimatedSection>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {BENEFITS.map((b) => {
+          {BENEFITS.map((b, i) => {
             const Icon = b.icon;
             return (
-              <div
-                key={b.title}
-                className="rounded-xl border border-border bg-card p-6 shadow-sm"
-              >
-                <span
-                  className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg ${b.iconBg}`}
-                >
-                  <Icon className={`h-5 w-5 ${b.iconColor}`} aria-hidden />
-                </span>
-                <h3 className="font-semibold">{b.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{b.body}</p>
-              </div>
+              <AnimatedSection key={b.title} delay={i * 80}>
+                <div className="group h-full rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-md">
+                  <span
+                    className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110 ${b.iconBg}`}
+                  >
+                    <Icon className={`h-5 w-5 ${b.iconColor}`} aria-hidden />
+                  </span>
+                  <h3 className="font-semibold">{b.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{b.body}</p>
+                </div>
+              </AnimatedSection>
             );
           })}
         </div>

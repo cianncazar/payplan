@@ -1,12 +1,13 @@
 import { AlertCircle, CheckCircle } from 'lucide-react';
+import { AnimatedSection } from './animated-section';
 
 export function ShortfallExampleSection() {
   return (
     <section className="bg-primary py-16 md:py-24" aria-labelledby="shortfall-heading">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="grid gap-12 md:grid-cols-2 md:gap-16 md:items-center">
-          {/* Text */}
-          <div>
+          {/* Text — slide in from left */}
+          <AnimatedSection from="left">
             <h2 id="shortfall-heading" className="text-3xl font-bold tracking-tight text-primary-foreground md:text-4xl">
               Shortfalls are shown before they become missed payments.
             </h2>
@@ -19,13 +20,13 @@ export function ShortfallExampleSection() {
               <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary-foreground/60" aria-hidden />
               PayPlan suggests options, but never automatically changes your plan.
             </p>
-          </div>
+          </AnimatedSection>
 
-          {/* Example alert card */}
-          <div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+          {/* Example alert card — slide in from right */}
+          <AnimatedSection from="right" delay={100}>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:shadow-lg">
               <div className="flex items-start gap-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-destructive/20">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-destructive/20 transition-transform duration-300 hover:scale-110">
                   <AlertCircle className="h-4 w-4 text-red-300" aria-hidden />
                 </span>
                 <div>
@@ -71,7 +72,7 @@ export function ShortfallExampleSection() {
                 </ul>
               </div>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>

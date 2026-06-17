@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { Shield, TriangleAlert, CheckCircle, CircleDollarSign } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { AnimatedSection } from './animated-section';
 
 function HeroPreviewCard() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-md">
+    <div className="rounded-2xl border border-border bg-card p-5 shadow-md transition-shadow duration-300 hover:shadow-xl">
       <div className="mb-4 flex items-center justify-between">
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Next 30 days
@@ -16,19 +17,19 @@ function HeroPreviewCard() {
       </div>
 
       <div className="space-y-3">
-        <div className="flex items-center justify-between rounded-lg border border-border bg-muted/40 px-3 py-2.5">
+        <div className="flex items-center justify-between rounded-lg border border-border bg-muted/40 px-3 py-2.5 transition-colors duration-150 hover:bg-muted/70">
           <span className="text-sm text-muted-foreground">Cash available</span>
           <span className="font-semibold tabular-nums">₱8,500</span>
         </div>
-        <div className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5 dark:border-emerald-800 dark:bg-emerald-950/30">
+        <div className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5 transition-colors duration-150 hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/30 dark:hover:bg-emerald-950/50">
           <span className="text-sm text-emerald-800 dark:text-emerald-200">Salary (Jun 30)</span>
           <span className="font-semibold tabular-nums text-emerald-700 dark:text-emerald-300">+₱12,000</span>
         </div>
-        <div className="flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2.5">
+        <div className="flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2.5 transition-colors duration-150 hover:bg-destructive/10">
           <span className="text-sm text-destructive/90">Rent (Jun 25)</span>
           <span className="font-semibold tabular-nums text-destructive">−₱8,000</span>
         </div>
-        <div className="flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2.5">
+        <div className="flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2.5 transition-colors duration-150 hover:bg-destructive/10">
           <span className="text-sm text-destructive/90">BNPL (Jun 22)</span>
           <span className="font-semibold tabular-nums text-destructive">−₱1,500</span>
         </div>
@@ -52,57 +53,71 @@ export function LandingHero() {
     >
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
-          {/* Left column */}
+          {/* Left column — sequential entrance */}
           <div className="flex flex-col gap-6">
-            <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-              <Shield className="h-3.5 w-3.5" aria-hidden />
-              No account required
-            </span>
+            <AnimatedSection delay={0}>
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary transition-colors duration-200 hover:bg-primary/15">
+                <Shield className="h-3.5 w-3.5" aria-hidden />
+                No account required
+              </span>
+            </AnimatedSection>
 
-            <div>
-              <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-                Know if you&apos;ll have enough money before payday.
-              </h1>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Enter your cash, next income, and upcoming payments. PayPlan shows what you can
-                cover, what is at risk, and where a shortfall may happen.
+            <AnimatedSection delay={120}>
+              <div>
+                <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+                  Know if you&apos;ll have enough money before payday.
+                </h1>
+                <p className="mt-4 text-lg text-muted-foreground">
+                  Enter your cash, next income, and upcoming payments. PayPlan shows what you can
+                  cover, what is at risk, and where a shortfall may happen.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={240}>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/"
+                  className={cn(
+                    buttonVariants({ size: 'lg' }),
+                    'w-full justify-center transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] sm:w-auto'
+                  )}
+                >
+                  Start Planning
+                </Link>
+                <a
+                  href="#how-it-works"
+                  className={cn(
+                    buttonVariants({ variant: 'outline', size: 'lg' }),
+                    'w-full justify-center transition-all duration-200 hover:bg-muted sm:w-auto'
+                  )}
+                >
+                  See how it works
+                </a>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={360}>
+              <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-500" aria-hidden />
+                Your plan stays in this browser unless you choose to export or back it up.
               </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/"
-                className={cn(buttonVariants({ size: 'lg' }), 'w-full justify-center sm:w-auto')}
-              >
-                Start Planning
-              </Link>
-              <a
-                href="#how-it-works"
-                className={cn(
-                  buttonVariants({ variant: 'outline', size: 'lg' }),
-                  'w-full justify-center sm:w-auto'
-                )}
-              >
-                See how it works
-              </a>
-            </div>
-
-            <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-500" aria-hidden />
-              Your plan stays in this browser unless you choose to export or back it up.
-            </p>
+            </AnimatedSection>
           </div>
 
-          {/* Right column: preview card */}
-          <div className="relative flex justify-center md:justify-end">
+          {/* Right column — slide in from right, then float */}
+          <AnimatedSection from="right" delay={200} className="flex justify-center md:justify-end">
             <div className="w-full max-w-sm">
-              <HeroPreviewCard />
-              <div className="mt-3 flex items-center gap-1.5 justify-center">
+              {/* Float wrapper (separate from hover) */}
+              <div className="animate-float">
+                <HeroPreviewCard />
+              </div>
+              <div className="mt-3 flex items-center justify-center gap-1.5">
                 <CircleDollarSign className="h-3.5 w-3.5 text-muted-foreground" aria-hidden />
                 <span className="text-xs text-muted-foreground">Sample data — not your real plan</span>
               </div>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>

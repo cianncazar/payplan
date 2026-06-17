@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Wallet, CalendarCheck, TriangleAlert } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { AnimatedSection } from './animated-section';
 
 const STEPS = [
   {
@@ -28,11 +29,11 @@ export function HowItWorksSection() {
   return (
     <section id="how-it-works" className="bg-background py-16 md:py-24" aria-labelledby="hiw-heading">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mx-auto max-w-2xl text-center">
+        <AnimatedSection className="mx-auto max-w-2xl text-center">
           <h2 id="hiw-heading" className="text-3xl font-bold tracking-tight md:text-4xl">
             Plan your payments in three steps.
           </h2>
-        </div>
+        </AnimatedSection>
 
         <div className="relative mt-12 grid gap-8 sm:grid-cols-3">
           {/* Connector lines (desktop) */}
@@ -42,28 +43,36 @@ export function HowItWorksSection() {
             </div>
           </div>
 
-          {STEPS.map((step) => {
+          {STEPS.map((step, i) => {
             const Icon = step.icon;
             return (
-              <div key={step.number} className="relative flex flex-col items-center text-center">
-                <span className="relative mb-5 flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm">
-                  <Icon className="h-8 w-8 text-primary" aria-hidden />
-                  <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    {step.number}
+              <AnimatedSection key={step.number} delay={i * 150}>
+                <div className="group relative flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1">
+                  <span className="relative mb-5 flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-shadow duration-300 group-hover:shadow-md">
+                    <Icon className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" aria-hidden />
+                    <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground transition-transform duration-300 group-hover:scale-110">
+                      {step.number}
+                    </span>
                   </span>
-                </span>
-                <h3 className="font-semibold">{step.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{step.body}</p>
-              </div>
+                  <h3 className="font-semibold">{step.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{step.body}</p>
+                </div>
+              </AnimatedSection>
             );
           })}
         </div>
 
-        <div className="mt-10 flex justify-center">
-          <Link href="/" className={cn(buttonVariants({ size: 'lg' }))}>
+        <AnimatedSection delay={500} className="mt-10 flex justify-center">
+          <Link
+            href="/"
+            className={cn(
+              buttonVariants({ size: 'lg' }),
+              'transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]'
+            )}
+          >
             Create my first plan
           </Link>
-        </div>
+        </AnimatedSection>
       </div>
     </section>
   );

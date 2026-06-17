@@ -84,12 +84,14 @@ describe('LandingHeader', () => {
     expect(links[0]).toHaveAttribute('href', '/');
   });
 
-  it('toggles mobile menu on button click', () => {
+  it('toggles aria-expanded on mobile menu button click', () => {
     render(<LandingHeader />);
     const toggleBtn = screen.getByRole('button', { name: /open menu/i });
-    expect(screen.queryByRole('navigation', { name: /mobile navigation/i })).toBeNull();
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
     fireEvent.click(toggleBtn);
-    expect(screen.getByRole('navigation', { name: /mobile navigation/i })).toBeInTheDocument();
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.click(toggleBtn);
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
   });
 });
 

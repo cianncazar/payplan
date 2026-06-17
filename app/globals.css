@@ -176,6 +176,16 @@
   --sidebar-ring: #00b090;
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -185,6 +195,7 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
   /* Typography scale from style guide */
   h1 {
@@ -199,6 +210,16 @@
 }
 
 @layer utilities {
+  /* Landing page animations */
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float {
+      animation: none;
+    }
+  }
+
   /* Elevation levels (Style guide: Level 0–4) */
   .elevation-0 {
     box-shadow: none;

@@ -1,4 +1,5 @@
 import { CircleDollarSign, CalendarCheck, Wallet, CalendarDays } from 'lucide-react';
+import { AnimatedSection } from './animated-section';
 
 const USE_CASES = [
   {
@@ -35,28 +36,27 @@ export function UseCasesSection() {
   return (
     <section className="bg-muted/40 py-16 md:py-24" aria-labelledby="usecases-heading">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mx-auto max-w-2xl text-center">
+        <AnimatedSection className="mx-auto max-w-2xl text-center">
           <h2 id="usecases-heading" className="text-3xl font-bold tracking-tight md:text-4xl">
             Useful when timing matters.
           </h2>
-        </div>
+        </AnimatedSection>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {USE_CASES.map((uc) => {
+          {USE_CASES.map((uc, i) => {
             const Icon = uc.icon;
             return (
-              <div
-                key={uc.title}
-                className="rounded-xl border border-border bg-card p-6 shadow-sm"
-              >
-                <span
-                  className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg ${uc.iconBg}`}
-                >
-                  <Icon className={`h-5 w-5 ${uc.iconColor}`} aria-hidden />
-                </span>
-                <h3 className="font-semibold">{uc.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{uc.body}</p>
-              </div>
+              <AnimatedSection key={uc.title} delay={i * 100}>
+                <div className="group h-full rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-md">
+                  <span
+                    className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110 ${uc.iconBg}`}
+                  >
+                    <Icon className={`h-5 w-5 ${uc.iconColor}`} aria-hidden />
+                  </span>
+                  <h3 className="font-semibold">{uc.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{uc.body}</p>
+                </div>
+              </AnimatedSection>
             );
           })}
         </div>

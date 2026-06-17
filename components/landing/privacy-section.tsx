@@ -1,4 +1,5 @@
 import { Shield, UserX, Banknote, DownloadCloud, AlertCircle } from 'lucide-react';
+import { AnimatedSection } from './animated-section';
 
 const PRIVACY_POINTS = [
   { icon: UserX, text: 'No sign-up required' },
@@ -12,16 +13,16 @@ export function PrivacySection() {
     <section id="privacy" className="bg-background py-16 md:py-24" aria-labelledby="privacy-heading">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <div className="grid gap-12 md:grid-cols-2 md:gap-16 md:items-center">
-          {/* Icon / visual */}
-          <div className="flex justify-center">
-            <div className="flex h-48 w-48 flex-col items-center justify-center rounded-3xl border border-border bg-muted shadow-sm">
-              <Shield className="h-20 w-20 text-primary/30" aria-hidden />
+          {/* Icon — slide in from left */}
+          <AnimatedSection from="left" className="flex justify-center">
+            <div className="group flex h-48 w-48 flex-col items-center justify-center rounded-3xl border border-border bg-muted shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/30">
+              <Shield className="h-20 w-20 text-primary/30 transition-all duration-300 group-hover:text-primary/50 group-hover:scale-110" aria-hidden />
               <p className="mt-3 text-xs font-semibold text-muted-foreground">Local-first</p>
             </div>
-          </div>
+          </AnimatedSection>
 
-          {/* Text */}
-          <div>
+          {/* Text — slide in from right */}
+          <AnimatedSection from="right" delay={100}>
             <h2 id="privacy-heading" className="text-3xl font-bold tracking-tight md:text-4xl">
               No account required. Your plan stays local.
             </h2>
@@ -34,8 +35,11 @@ export function PrivacySection() {
               {PRIVACY_POINTS.map((point) => {
                 const Icon = point.icon;
                 return (
-                  <li key={point.text} className="flex items-center gap-3 text-sm">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                  <li
+                    key={point.text}
+                    className="group flex items-center gap-3 text-sm"
+                  >
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 transition-all duration-200 group-hover:bg-primary/20 group-hover:scale-110">
                       <Icon className="h-4 w-4 text-primary" aria-hidden />
                     </span>
                     {point.text}
@@ -51,7 +55,7 @@ export function PrivacySection() {
                 plan. Export a backup if you want to keep a copy.
               </p>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>

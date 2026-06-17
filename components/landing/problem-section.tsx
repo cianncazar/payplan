@@ -1,4 +1,5 @@
 import { CalendarDays, Wallet, TriangleAlert } from 'lucide-react';
+import { AnimatedSection } from './animated-section';
 
 const PROBLEMS = [
   {
@@ -28,7 +29,7 @@ export function ProblemSection() {
   return (
     <section className="bg-muted/40 py-16 md:py-24" aria-labelledby="problem-heading">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mx-auto max-w-2xl text-center">
+        <AnimatedSection className="mx-auto max-w-2xl text-center">
           <h2 id="problem-heading" className="text-3xl font-bold tracking-tight md:text-4xl">
             Bills are easy to list. Timing is the hard part.
           </h2>
@@ -37,24 +38,23 @@ export function ProblemSection() {
             PayPlan focuses on timing, cash flow, and deadlines so you can plan before a shortfall
             happens.
           </p>
-        </div>
+        </AnimatedSection>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
-          {PROBLEMS.map((p) => {
+          {PROBLEMS.map((p, i) => {
             const Icon = p.icon;
             return (
-              <div
-                key={p.title}
-                className="rounded-xl border border-border bg-card p-6 shadow-sm"
-              >
-                <span
-                  className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg ${p.iconBg}`}
-                >
-                  <Icon className={`h-5 w-5 ${p.iconColor}`} aria-hidden />
-                </span>
-                <h3 className="font-semibold">{p.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{p.body}</p>
-              </div>
+              <AnimatedSection key={p.title} delay={i * 120}>
+                <div className="group h-full rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-md">
+                  <span
+                    className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110 ${p.iconBg}`}
+                  >
+                    <Icon className={`h-5 w-5 ${p.iconColor}`} aria-hidden />
+                  </span>
+                  <h3 className="font-semibold">{p.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{p.body}</p>
+                </div>
+              </AnimatedSection>
             );
           })}
         </div>
