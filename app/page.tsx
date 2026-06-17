@@ -22,11 +22,11 @@ export default function DashboardPage() {
         <DueSoonCard days={30} />
       </div>
 
-      {/* Live 30-day plan results */}
-      <PlanResultsCard />
-
       {/* Contextual insight pills */}
       <SmartInsights />
+
+      {/* Live 30-day plan results */}
+      <PlanResultsCard />
 
       {/* Onboarding guide — hidden once user has data */}
       <QuickStartBanner />
